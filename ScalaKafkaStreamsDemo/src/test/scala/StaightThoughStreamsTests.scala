@@ -3,8 +3,6 @@ import Matchers._
 import org.apache.kafka.common.serialization.{StringDeserializer, StringSerializer}
 import java.io._
 import java.util.Properties
-
-import scala.collection.mutable.ListBuffer
 import org.apache.kafka.streams.TopologyTestDriver
 import org.apache.kafka.streams.test.ConsumerRecordFactory
 import org.apache.kafka.streams.test.OutputVerifier
@@ -40,13 +38,14 @@ class StaightThoughStreamsTests
     OutputVerifier.compareKeyValue(testDriver.readOutput("OutputTopic", stringDeserializer, stringDeserializer), "key", "this is the input")
     val result = testDriver.readOutput("OutputTopic", stringDeserializer, stringDeserializer)
     assert(result == null)
-    //cleanup(props, testDriver)
+    cleanup(props, testDriver)
   }
 
 
   def cleanup(props:Properties, testDriver: TopologyTestDriver) = {
 
     try {
+      //there is a bug on windows which causes this line to throw exception
       testDriver.close
     } catch {
       case e: Exception => {

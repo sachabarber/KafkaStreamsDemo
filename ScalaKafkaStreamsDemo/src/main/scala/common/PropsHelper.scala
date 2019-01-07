@@ -1,6 +1,9 @@
+package common
+
 import java.util.Properties
-import org.apache.kafka.streams.scala._
+
 import org.apache.kafka.streams.StreamsConfig
+import org.apache.kafka.streams.scala._
 
 
 object PropsHelper  {

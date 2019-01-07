@@ -1,25 +1,25 @@
-import java.time.Duration
+package stateless.transformations
 
-import org.apache.kafka.streams.Topology
+import java.time.Duration
 import java.util.Properties
 
 import common.PropsHelper
 import org.apache.kafka.streams.scala.ImplicitConversions._
 import org.apache.kafka.streams.scala._
 import org.apache.kafka.streams.scala.kstream._
-import org.apache.kafka.streams.KafkaStreams
+import org.apache.kafka.streams.{KafkaStreams, Topology}
 
 
 /**
   * This example simply maps values from 'InputTopic' to 'OutputTopic'
   * with no changes
   */
-class StraightThroughTopology extends App {
+class FilterTopology extends App {
 
   import Serdes._
 
   val props: Properties = PropsHelper.createBasicStreamProperties(
-    "straight-through-application", "localhost:9092")
+    "stateless-filter-application", "localhost:9092")
 
   run()
 
@@ -35,9 +35,10 @@ class StraightThroughTopology extends App {
   def createTopolgy(): Topology = {
 
     val builder: StreamsBuilder = new StreamsBuilder
-    val textLines: KStream[String, String] =
-      builder.stream[String, String]("InputTopic")
-    textLines.mapValues(v => v).to("OutputTopic")
+    val textLines: KStream[String, Long] =
+      builder.stream[String, Long]("InputTopic")
+    val evens = textLines.filter((k,v) => v % 2 == 0)
+    evens.to("OutputTopic")
     builder.build()
   }
 }

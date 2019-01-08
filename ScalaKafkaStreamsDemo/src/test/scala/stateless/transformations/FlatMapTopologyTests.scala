@@ -4,21 +4,18 @@ import java.io._
 import java.util.Properties
 
 import common.PropsHelper
-import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.{LongDeserializer, LongSerializer, StringDeserializer, StringSerializer}
+import org.apache.kafka.common.serialization._
 import org.apache.kafka.streams.TopologyTestDriver
 import org.apache.kafka.streams.test.{ConsumerRecordFactory, OutputVerifier}
 import org.scalatest._
-import scala.collection.JavaConverters._
 
-class FilterTopologyTests
+class FlatMapTopologyTests
   extends FunSuite
   with BeforeAndAfter
   with Matchers {
 
-  val props = PropsHelper.createBasicStreamProperties("stateless-filter-application", "localhost:9092")
-  val stringDeserializer: StringDeserializer = new StringDeserializer
-  val longDeserializer: LongDeserializer = new LongDeserializer
+  val props = PropsHelper.createBasicStreamProperties("stateless-flatMap-application", "localhost:9092")
+  val integerDeserializer: IntegerDeserializer = new IntegerDeserializer
 
   before {
   }
@@ -30,24 +27,38 @@ class FilterTopologyTests
   test("Should produce correct output") {
 
     //arrange
-    val recordFactory: ConsumerRecordFactory[String, java.lang.Long] =
-      new ConsumerRecordFactory[String, java.lang.Long](new StringSerializer, new LongSerializer)
-    val filterTopology = new FilterTopology()
-    val testDriver = new TopologyTestDriver(filterTopology.createTopolgy(), props)
+    val recordFactory: ConsumerRecordFactory[java.lang.Integer, java.lang.Integer] =
+      new ConsumerRecordFactory[java.lang.Integer, java.lang.Integer](new IntegerSerializer, new IntegerSerializer)
+    val flatMapTopology = new FlatMapTopology()
+    val testDriver = new TopologyTestDriver(flatMapTopology.createTopolgy(), props)
 
     //act
-    List(0L,6L,7L).foreach(x => {
-      testDriver.pipeInput(recordFactory.create("InputTopic", "key", java.lang.Long.valueOf(x), 9995L + 1))
-    })
+    testDriver.pipeInput(recordFactory.create("InputTopic", 1, 2, 9995L))
 
     //assert
-    OutputVerifier.compareValue(testDriver.readOutput("Above5OutputTopic", stringDeserializer, longDeserializer), 6L.asInstanceOf[java.lang.Long])
-    OutputVerifier.compareValue(testDriver.readOutput("Above5OutputTopic", stringDeserializer, longDeserializer), 7L.asInstanceOf[java.lang.Long])
-    val result = testDriver.readOutput("OddTopic", stringDeserializer, longDeserializer)
-    assert(result == null)
 
-    OutputVerifier.compareValue(testDriver.readOutput("BelowOrEqualTo5OutputTopic", stringDeserializer, longDeserializer), 0L.asInstanceOf[java.lang.Long])
-    val result2 = testDriver.readOutput("BelowOrEqualTo5OutputTopic", stringDeserializer, longDeserializer)
+    // flatMap is yielding this
+    //    List(
+    //      (k + 1, v + 2),
+    //      (k + 3, v + 4)
+    //    )
+    OutputVerifier.compareValue(testDriver.readOutput("flatMappedOutputTopic", integerDeserializer, integerDeserializer),
+      4.asInstanceOf[Integer])
+    OutputVerifier.compareValue(testDriver.readOutput("flatMappedOutputTopic", integerDeserializer, integerDeserializer),
+      6.asInstanceOf[Integer])
+    val result1 = testDriver.readOutput("flatMappedOutputTopic", integerDeserializer, integerDeserializer)
+    assert(result1 == null)
+
+    // flatMapValues is yielding this
+    //    List(
+    //      v + 10,
+    //      v + 20
+    //    )
+    OutputVerifier.compareValue(testDriver.readOutput("flatMappedValuesOutputTopic", integerDeserializer, integerDeserializer),
+      12.asInstanceOf[Integer])
+    OutputVerifier.compareValue(testDriver.readOutput("flatMappedValuesOutputTopic", integerDeserializer, integerDeserializer),
+      22.asInstanceOf[Integer])
+    val result2 = testDriver.readOutput("flatMappedValuesOutputTopic", integerDeserializer, integerDeserializer)
     assert(result2 == null)
 
     cleanup(props, testDriver)

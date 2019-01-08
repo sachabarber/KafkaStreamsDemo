@@ -43,6 +43,11 @@ class BranchTopology extends App {
       (k,v) => v.startsWith("Even")
     )
 
+    //Branch (or split) a KStream based on the supplied predicates into one or more KStream instances.
+    //Predicates are evaluated in order. A record is placed to one and only one output stream on
+    //the first match: if the n-th predicate evaluates to true, the record is placed to n-th stream.
+    //If no predicate matches, the the record is dropped.
+    //Branching is useful, for example, to route records to different downstream topics.
     val branches : Array[KStream[String, String]] = textLines.branch(predicates:_*)
     branches(0).to("OddTopic")
     branches(1).to("EvenTopic")

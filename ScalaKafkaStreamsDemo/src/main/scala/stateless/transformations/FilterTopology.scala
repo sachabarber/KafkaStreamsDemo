@@ -37,8 +37,17 @@ class FilterTopology extends App {
     val builder: StreamsBuilder = new StreamsBuilder
     val textLines: KStream[String, Long] =
       builder.stream[String, Long]("InputTopic")
-    val evens = textLines.filter((k,v) => v % 2 == 0)
-    evens.to("OutputTopic")
+
+    //Evaluates a boolean function for each element and retains those
+    //for which the function returns true
+    val above5 = textLines.filter((k,v) => v > 5)
+    above5.to("Above5OutputTopic")
+
+    //Evaluates a boolean function for each element and drops those
+    //for which the function returns true.
+    val belowOrEqualTo5 = textLines.filterNot((k,v) => v > 5)
+    belowOrEqualTo5.to("BelowOrEqualTo5OutputTopic")
+
     builder.build()
   }
 }

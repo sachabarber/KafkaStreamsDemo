@@ -4,21 +4,20 @@ import java.io._
 import java.util.Properties
 
 import common.PropsHelper
-import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.{LongDeserializer, LongSerializer, StringDeserializer, StringSerializer}
+import org.apache.kafka.common.serialization._
 import org.apache.kafka.streams.TopologyTestDriver
 import org.apache.kafka.streams.test.{ConsumerRecordFactory, OutputVerifier}
 import org.scalatest._
-import scala.collection.JavaConverters._
 
-class FilterTopologyTests
+import scala.io.Source
+
+class ForEachTopologyTests
   extends FunSuite
   with BeforeAndAfter
   with Matchers {
 
-  val props = PropsHelper.createBasicStreamProperties("stateless-filter-application", "localhost:9092")
-  val stringDeserializer: StringDeserializer = new StringDeserializer
-  val longDeserializer: LongDeserializer = new LongDeserializer
+  val props = PropsHelper.createBasicStreamProperties("stateless-foreach-application", "localhost:9092")
+  val integerDeserializer: IntegerDeserializer = new IntegerDeserializer
 
   before {
   }
@@ -30,26 +29,29 @@ class FilterTopologyTests
   test("Should produce correct output") {
 
     //arrange
-    val recordFactory: ConsumerRecordFactory[String, java.lang.Long] =
-      new ConsumerRecordFactory[String, java.lang.Long](new StringSerializer, new LongSerializer)
-    val filterTopology = new FilterTopology()
-    val testDriver = new TopologyTestDriver(filterTopology.createTopolgy(), props)
+
+    val path ="c:\\temp\\kafka-streams-foreach.txt"
+    new File(path).delete()
+    val pw = new PrintWriter(new File(path))
+
+    val recordFactory: ConsumerRecordFactory[java.lang.Integer, java.lang.Integer] =
+      new ConsumerRecordFactory[java.lang.Integer, java.lang.Integer](new IntegerSerializer, new IntegerSerializer)
+    val forEachTopology = new ForEachTopology(pw)
+    val testDriver = new TopologyTestDriver(forEachTopology.createTopolgy(), props)
 
     //act
-    List(0L,6L,7L).foreach(x => {
-      testDriver.pipeInput(recordFactory.create("InputTopic", "key", java.lang.Long.valueOf(x), 9995L + 1))
-    })
+    testDriver.pipeInput(recordFactory.create("InputTopic", 1, 1, 9995L))
+    testDriver.pipeInput(recordFactory.create("InputTopic", 1, 2, 9995L + 1))
 
     //assert
-    OutputVerifier.compareValue(testDriver.readOutput("Above5OutputTopic", stringDeserializer, longDeserializer), 6L.asInstanceOf[java.lang.Long])
-    OutputVerifier.compareValue(testDriver.readOutput("Above5OutputTopic", stringDeserializer, longDeserializer), 7L.asInstanceOf[java.lang.Long])
-    val result = testDriver.readOutput("OddTopic", stringDeserializer, longDeserializer)
-    assert(result == null)
+    val lines = Source.fromFile(path).getLines.toList
 
-    OutputVerifier.compareValue(testDriver.readOutput("BelowOrEqualTo5OutputTopic", stringDeserializer, longDeserializer), 0L.asInstanceOf[java.lang.Long])
-    val result2 = testDriver.readOutput("BelowOrEqualTo5OutputTopic", stringDeserializer, longDeserializer)
-    assert(result2 == null)
+    assert(lines.length == 2)
+    assert(lines(0) == "Saw input value line '1'")
+    assert(lines(1) == "Saw input value line '2'")
 
+
+    forEachTopology.stop()
     cleanup(props, testDriver)
   }
 

@@ -1,6 +1,5 @@
 package stateless.transformations
 
-import java.io.{File, PrintWriter}
 import java.time.Duration
 import java.util.Properties
 
@@ -15,22 +14,16 @@ import org.apache.kafka.streams.{KafkaStreams, Topology}
   * This example simply maps values from 'InputTopic' to 'OutputTopic'
   * with no changes
   */
-class ForEachTopology(val pw: PrintWriter) extends App {
+class SelectKeyTopology extends App {
 
   import Serdes._
 
   val props: Properties = PropsHelper.createBasicStreamProperties(
-    "stateless-foreach-application", "localhost:9092")
+    "stateless-selectKey-application", "localhost:9092")
 
   run()
 
-  def stop() : Unit = {
-    pw.close()
-  }
-
   private def run(): Unit = {
-
-
     val topology = createTopolgy()
     val streams: KafkaStreams = new KafkaStreams(topology, props)
     streams.start()
@@ -45,17 +38,14 @@ class ForEachTopology(val pw: PrintWriter) extends App {
     val textLines: KStream[Int, Int] =
       builder.stream[Int, Int]("InputTopic")
 
-    //Terminal operation. Performs a stateless action on each record.
-
-    //You would use foreach to cause side effects based on the input data (similar to peek)
-    // and then stop further processing of the input data (unlike peek, which is not a terminal operation).
-    //  Note on processing guarantees: Any side effects of an action (such as writing to
-    // external systems) are not trackable by Kafka, which means they will typically not
-    // benefit from Kafka’s processing guarantees.
-    val flatMapped = textLines.foreach((k,v)=> {
-      pw.write(s"Saw input value line '$v'\r\n")
-      pw.flush()
+    // Assigns a new key – possibly of a new key type – to each record.
+    // Calling selectKey(mapper) is the same as calling map((key, value) -> mapper(key, value), value).
+    // Marks the stream for data re-partitioning: Applying a grouping or a join after selectKey will
+    // result in re-partitioning of the records.
+    val mapped = textLines.selectKey((k,v) => {
+        k.toString
     })
+    mapped.to("selectKeyOutputTopic")
 
     builder.build()
   }

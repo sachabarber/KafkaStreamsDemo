@@ -37,13 +37,11 @@ class WordCountTopology extends App {
     val wordCountStoreName = "wordCountStore"
     val wordCountStoreSupplied = Stores.inMemoryKeyValueStore(wordCountStoreName)
 
-       val builder = new StreamsBuilder()
+    val builder = new StreamsBuilder()
     val textLines: KStream[String, String] = builder.stream("TextLinesTopic")
-    val wordCounts = textLines.flatMapValues(x=> x.toLowerCase.split("\\W+"))
+    val wordCounts = textLines.flatMapValues(x => x.toLowerCase.split("\\W+"))
                     .groupBy((key, word) => word)
                     .count()(Materialized.as(wordCountStoreSupplied))
-
-
     wordCounts.toStream.to("WordsWithCountsTopic")
     builder.build()
   }
@@ -65,7 +63,7 @@ class WordCountTopology extends App {
     builder.addStateStore(wordCountStoreBuilder)
 
     val textLines: KStream[String, String] = builder.stream("TextLinesTopic")
-    val wordCounts = textLines.flatMapValues(x=> x.toLowerCase.split("\\W+"))
+    val wordCounts = textLines.flatMapValues(x => x.toLowerCase.split("\\W+"))
       .groupBy((key, word) => word)
       .count()(Materialized.as(wordCountStoreName))
 

@@ -52,6 +52,9 @@ class WordCountTopology extends App {
     val wordCountStoreName = "wordCountStore"
 
     val logConfig = new util.HashMap[String, String]
+    logConfig.put("retention.ms", "172800000")
+    logConfig.put("retention.bytes", "10000000000")
+    logConfig.put("cleanup.policy", "compact,delete")
     val wordCountStoreSupplier = Stores.inMemoryKeyValueStore(wordCountStoreName)
     val wordCountStoreBuilder = Stores.keyValueStoreBuilder(wordCountStoreSupplier, Serdes.String, Serdes.Long)
       .withLoggingEnabled(logConfig)
@@ -62,6 +65,12 @@ class WordCountTopology extends App {
 
     builder.addStateStore(wordCountStoreBuilder)
 
+    //NOTE : You may find you need to play with these Config values in order
+    //to get the stateful operation to work correctly/how you want it to
+    //    props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 10000.asInstanceOf[Object])
+    //    props.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 10485760.asInstanceOf[Object])
+    //    props.put(StreamsConfig.STATE_CLEANUP_DELAY_MS_CONFIG, 50000.asInstanceOf[Object])
+    //By playing around with these values you should be able to find the values that work for you
     val textLines: KStream[String, String] = builder.stream("TextLinesTopic")
     val wordCounts = textLines.flatMapValues(x => x.toLowerCase.split("\\W+"))
       .groupBy((key, word) => word)

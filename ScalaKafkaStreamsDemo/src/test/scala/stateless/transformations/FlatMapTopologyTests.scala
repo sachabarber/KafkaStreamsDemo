@@ -30,7 +30,7 @@ class FlatMapTopologyTests
     val recordFactory: ConsumerRecordFactory[java.lang.Integer, java.lang.Integer] =
       new ConsumerRecordFactory[java.lang.Integer, java.lang.Integer](new IntegerSerializer, new IntegerSerializer)
     val flatMapTopology = new FlatMapTopology()
-    val testDriver = new TopologyTestDriver(flatMapTopology.createTopolgy(), props)
+      val testDriver = new TopologyTestDriver(flatMapTopology.createTopolgy(), props)
 
     //act
     testDriver.pipeInput(recordFactory.create("InputTopic", 1, 2, 9995L))

@@ -67,6 +67,8 @@ class GroupByTopology extends App {
     //    props.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 10485760.asInstanceOf[Object])
     //    props.put(StreamsConfig.STATE_CLEANUP_DELAY_MS_CONFIG, 50000.asInstanceOf[Object])
     //By playing around with these values you should be able to find the values that work for you
+    //WARNING : Chaning these settings may have impact on the tests, as less frequent commits/state store
+    //cache flushing may occur
     groupByKeyTextLines.groupByKey
         .count()
         .mapValues(x => x.toString)
@@ -97,6 +99,8 @@ class GroupByTopology extends App {
     //    props.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 10485760.asInstanceOf[Object])
     //    props.put(StreamsConfig.STATE_CLEANUP_DELAY_MS_CONFIG, 50000.asInstanceOf[Object])
     //By playing around with these values you should be able to find the values that work for you
+    //WARNING : Chaning these settings may have impact on the tests, as less frequent commits/state store
+    //cache flushing may occur
     groupByTextLines.flatMapValues(x => x.toLowerCase.split("\\W+"))
       .groupBy((key, word) => word)
       .count()

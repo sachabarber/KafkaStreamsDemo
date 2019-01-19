@@ -48,10 +48,10 @@ class ForEachTopology(val pw: PrintWriter) extends App {
     //Terminal operation. Performs a stateless action on each record.
 
     //You would use foreach to cause side effects based on the input data (similar to peek)
-    // and then stop further processing of the input data (unlike peek, which is not a terminal operation).
-    //  Note on processing guarantees: Any side effects of an action (such as writing to
-    // external systems) are not trackable by Kafka, which means they will typically not
-    // benefit from Kafka’s processing guarantees.
+    //and then stop further processing of the input data (unlike peek, which is not a terminal operation).
+    //Note on processing guarantees: Any side effects of an action (such as writing to
+    //external systems) are not trackable by Kafka, which means they will typically not
+    //benefit from Kafka’s processing guarantees.
     val flatMapped = textLines.foreach((k,v)=> {
       pw.write(s"Saw input value line '$v'\r\n")
       pw.flush()

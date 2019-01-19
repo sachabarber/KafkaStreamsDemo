@@ -49,7 +49,7 @@ class PeekTopology(val pw: PrintWriter) extends App {
     //
     // You would use peek to cause side effects based on the input data (similar to foreach)
     // and continue processing the input data (unlike foreach, which is a terminal operation).
-    // eek returns the input stream as-is; if you need to modify the input stream, use map or mapValues instead.
+    // Peek returns the input stream as-is; if you need to modify the input stream, use map or mapValues instead.
     // peek is helpful for use cases such as logging or tracking metrics or for debugging and troubleshooting.
     //
     // Note on processing guarantees: Any side effects of an action (such as writing to external systems)

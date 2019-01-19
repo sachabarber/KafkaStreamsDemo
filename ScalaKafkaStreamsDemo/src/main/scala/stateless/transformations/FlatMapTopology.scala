@@ -39,7 +39,7 @@ class FlatMapTopology extends App {
       builder.stream[Int, Int]("InputTopic")
 
     //Takes one record and produces zero, one, or more records.
-    // You can modify the record keys and values, including their types
+    //You can modify the record keys and values, including their types
     val flatMapped = textLines.flatMap((k,v) => {
       List(
         (k + 1, v + 2),
@@ -50,7 +50,7 @@ class FlatMapTopology extends App {
 
 
     //Takes one record and produces zero, one, or more records, while retaining the key of the original record.
-    // You can modify the record values and the value type.
+    //You can modify the record values and the value type.
     //flatMapValues is preferable to flatMap because it will not cause data re-partitioning.
     //However, you cannot modify the key or key type like flatMap does
     val flatMappedValues = textLines.flatMapValues((k,v) => {

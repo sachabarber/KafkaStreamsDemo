@@ -53,7 +53,6 @@ class AggregateTopology extends App {
       groupedBy
         .aggregate[Long](0L)((aggKey, newValue, aggValue) => aggValue + newValue)(matererlized)
     aggregatedTable
-        //.mapValues(x => x.toString)
         .toStream
           .peek((k,v) =>
           {

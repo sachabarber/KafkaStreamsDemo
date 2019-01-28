@@ -23,3 +23,36 @@ Set of small KafkaStreams demos/tests written in Scala 2.12, using Kafka 2.1.1
 <ul>
  	<li>Aggregating
 <ul>
+ 	<li><a href="https://sachabarbs.wordpress.com/2019/01/28/kafkastreams-aggregating/">Aggregate / Aggregate</a></li>
+ 	<li><a href="https://sachabarbs.wordpress.com/2019/01/28/kafkastreams-aggregating/">Count / Count</a></li>
+ 	<li><a href="https://sachabarbs.wordpress.com/2019/01/28/kafkastreams-aggregating/">Reduce / Reduce</a></li>
+ 	<li><a href="https://sachabarbs.wordpress.com/2019/01/28/kafkastreams-aggregating/">Custom state store</a></li>
+</ul>
+</li>
+ 	<li>Joining
+<ul>
+ 	<li>Inner Join</li>
+ 	<li>Left Join</li>
+ 	<li>Outer Join</li>
+ 	<li>Custom ValueJoiner</li>
+</ul>
+</li>
+ 	<li>Windowing
+<ul>
+ 	<li>Tumbling time window</li>
+ 	<li>Hopping time window</li>
+ 	<li>Sliding time window</li>
+ 	<li>Session window</li>
+</ul>
+</li>
+</ul>
+</li>
+ 	<li>Applying processors and transformers (Processor API integration)
+<ul>
+ 	<li>Process</li>
+ 	<li>Transform / Transform (Values only)</li>
+</ul>
+</li>
+ 	<li>Custom Serdes</li>
+ 	<li>Interactive Queries</li>
+</ul>

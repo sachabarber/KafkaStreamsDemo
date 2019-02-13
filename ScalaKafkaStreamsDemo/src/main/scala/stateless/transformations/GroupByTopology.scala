@@ -11,10 +11,6 @@ import org.apache.kafka.streams.scala.kstream._
 import org.apache.kafka.streams.{KafkaStreams, Topology}
 
 
-/**
-  * This example simply maps values from 'InputTopic' to 'OutputTopic'
-  * with no changes
-  */
 class GroupByTopology extends App {
 
   import Serdes._

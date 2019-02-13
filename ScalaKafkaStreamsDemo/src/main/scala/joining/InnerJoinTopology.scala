@@ -13,10 +13,6 @@ import org.apache.kafka.streams.{KafkaStreams, Topology}
 import scala.util.Try
 
 
-/**
-  * This example simply maps values from 'InputTopic' to 'OutputTopic'
-  * with no changes
-  */
 class InnerJoinTopology extends App {
 
   import Serdes._

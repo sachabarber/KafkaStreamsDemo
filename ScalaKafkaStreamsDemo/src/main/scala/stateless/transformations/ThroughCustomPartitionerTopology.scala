@@ -10,7 +10,6 @@ import org.apache.kafka.streams.scala._
 import org.apache.kafka.streams.scala.kstream._
 import org.apache.kafka.streams.{KafkaStreams, Topology}
 
-
 class ThroughCustomPartitionerTopology() extends App {
 
   import Serdes._

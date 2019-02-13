@@ -10,10 +10,6 @@ import org.apache.kafka.streams.scala._
 import org.apache.kafka.streams.scala.kstream._
 
 
-/**
-  * This example simply maps values from 'InputTopic' to 'OutputTopic'
-  * with no changes
-  */
 class BranchTopology extends App {
 
   import Serdes._

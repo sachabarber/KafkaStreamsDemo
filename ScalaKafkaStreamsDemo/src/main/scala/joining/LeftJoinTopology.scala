@@ -1,21 +1,24 @@
-package stateless.transformations
+package joining
 
 import java.time.Duration
 import java.util.Properties
 
 import common.PropsHelper
+import org.apache.kafka.streams.kstream.JoinWindows
 import org.apache.kafka.streams.scala.ImplicitConversions._
 import org.apache.kafka.streams.scala._
 import org.apache.kafka.streams.scala.kstream._
 import org.apache.kafka.streams.{KafkaStreams, Topology}
 
+import scala.util.Try
 
-class SelectKeyTopology extends App {
+
+class LeftJoinTopology extends App {
 
   import Serdes._
 
   val props: Properties = PropsHelper.createBasicStreamProperties(
-    "stateless-selectKey-application", "localhost:9092")
+    "left-join-application", "localhost:9092")
 
   run()
 
@@ -31,17 +34,24 @@ class SelectKeyTopology extends App {
   def createTopolgy(): Topology = {
 
     val builder: StreamsBuilder = new StreamsBuilder
-    val textLines: KStream[Int, Int] =
-      builder.stream[Int, Int]("InputTopic")
+    val left: KStream[Int, String] =
+      builder.stream[Int, String]("LeftTopic")
+    val right: KStream[Int, String] =
+      builder.stream[Int, String]("RightTopic")
 
-    // Assigns a new key – possibly of a new key type – to each record.
-    // Calling selectKey(mapper) is the same as calling map((key, value) -> mapper(key, value), value).
-    // Marks the stream for data re-partitioning: Applying a grouping or a join after selectKey will
-    // result in re-partitioning of the records.
-    val mapped = textLines.selectKey((k,v) => {
-        k.toString
+    //do the join
+    val joinedStream = left.leftJoin(right)( (l: String, r: String) => {
+      val result = s"Left='${l}', Right='${r}'"
+      result
+    } , JoinWindows.of(Duration.ofSeconds(2)))
+
+    val peeked = joinedStream.peek((k,v)=> {
+
+      val theK = k
+      val theV = v
     })
-    mapped.to("selectKeyOutputTopic")
+
+    peeked.to("leftJoinOutput")
 
     builder.build()
   }

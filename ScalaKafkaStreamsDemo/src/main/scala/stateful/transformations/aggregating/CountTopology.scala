@@ -10,10 +10,6 @@ import org.apache.kafka.streams.scala.kstream.{Materialized, _}
 import org.apache.kafka.streams.{KafkaStreams, Topology}
 
 
-/**
-  * This example simply maps values from 'InputTopic' to 'OutputTopic'
-  * with no changes
-  */
 class CountTopology extends App {
 
   import Serdes._

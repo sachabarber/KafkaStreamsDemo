@@ -10,10 +10,6 @@ import org.apache.kafka.streams.scala.kstream._
 import org.apache.kafka.streams.KafkaStreams
 
 
-/**
-  * This example simply maps values from 'InputTopic' to 'OutputTopic'
-  * with no changes
-  */
 class StraightThroughTopology extends App {
 
   import Serdes._

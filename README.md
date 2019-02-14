@@ -31,10 +31,10 @@ Set of small KafkaStreams demos/tests written in Scala 2.12, using Kafka 2.1.1
 </li>
  	<li>Joining
 <ul>
- 	<li>Inner Join</li>
- 	<li>Left Join</li>
- 	<li>Outer Join</li>
- 	<li>Custom ValueJoiner</li>
+ 	<li><a href="https://sachabarbs.wordpress.com/2019/02/14/kafkastreams-joining/">Inner Join</a></li>
+ 	<li><a href="https://sachabarbs.wordpress.com/2019/02/14/kafkastreams-joining/">Left Join</a></li>
+ 	<li><a href="https://sachabarbs.wordpress.com/2019/02/14/kafkastreams-joining/">Outer Join</a></li>
+ 	<li><a href="https://sachabarbs.wordpress.com/2019/02/14/kafkastreams-joining/">Custom ValueJoiner</a></li>
 </ul>
 </li>
  	<li>Windowing

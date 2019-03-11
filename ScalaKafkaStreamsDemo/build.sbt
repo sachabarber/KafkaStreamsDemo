@@ -9,12 +9,14 @@ libraryDependencies += "org.apache.kafka" %% "kafka" % "2.1.0"
 libraryDependencies += "org.apache.kafka" % "kafka-clients" % "2.1.0"
 libraryDependencies += "org.apache.kafka" % "kafka-streams" % "2.1.0"
 libraryDependencies += "org.apache.kafka" %% "kafka-streams-scala" % "2.1.0"
+libraryDependencies += "org.skinny-framework.com.fasterxml.jackson.module" % "jackson-module-scala_2.12" % "2.8.4"
 
 //TEST
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test
 libraryDependencies += "org.apache.kafka" % "kafka-streams-test-utils" % "2.1.0" % Test
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.3"
+
 
 
 

@@ -5,6 +5,7 @@ import java.util.Properties
 
 import common.PropsHelper
 import entities.Rating
+import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.scala.ImplicitConversions._
 import org.apache.kafka.streams.scala._
 import org.apache.kafka.streams.scala.kstream._
@@ -12,9 +13,6 @@ import org.apache.kafka.streams.{KafkaStreams, Topology}
 
 
 class CustomSerdesTopology extends App {
-
-//
-
 
   import Serdes._
 
@@ -34,14 +32,19 @@ class CustomSerdesTopology extends App {
 
   def createTopolgy(): Topology = {
 
-    val stringSerde = Serdes.String
-    val ratingSerde = new JSONSerde[Rating]
-    val listRatingSerde = new JSONSerde[List[Rating]]
+    implicit val stringSerde = Serdes.String
+    implicit val ratingSerde = new JSONSerde[Rating]
+    implicit val listRatingSerde = new JSONSerde[List[Rating]]
+    implicit val consumed = kstream.Consumed.`with`(stringSerde, ratingSerde)
+    implicit val materializer = Materialized.`with`(stringSerde, listRatingSerde)
+    implicit val grouped = Grouped.`with`(stringSerde, ratingSerde)
+
+
     val builder: StreamsBuilder = new StreamsBuilder
+
 
     val ratings: KStream[String, Rating] =
           builder.stream[String, Rating]("CustomSerdesInputTopic")
-            (Consumed.with(stringSerde, ratingSerde))
 
     //When aggregating a grouped stream, you must provide an initializer (e.g., aggValue = 0)
     //and an “adder” aggregator (e.g., aggValue + curValue). When aggregating a grouped table,
@@ -50,10 +53,19 @@ class CustomSerdesTopology extends App {
     val aggregatedTable =
       groupedBy
         .aggregate[List[Rating]](List[Rating]())((aggKey, newValue, aggValue) => newValue :: aggValue)
-        (Materialized.with(stringSerde, listRatingSerde))
+        (Materialized.`with`(stringSerde, listRatingSerde))
 
-    aggregatedTable.toStream.to("CustomSerdesOutputTopic")
-      (Produced.with(stringSerde, listRatingSerde))
+
+    var finalStream = aggregatedTable.toStream
+    finalStream.peek((key, values) => {
+
+      val theKey = key
+      val theValues = values
+
+    })
+
+
+    finalStream.to("CustomSerdesOutputTopic")(Produced.`with`(stringSerde, listRatingSerde))
 
     builder.build()
   }

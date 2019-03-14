@@ -39,10 +39,7 @@ class CustomSerdesTopology extends App {
     implicit val materializer = Materialized.`with`(stringSerde, listRatingSerde)
     implicit val grouped = Grouped.`with`(stringSerde, ratingSerde)
 
-
     val builder: StreamsBuilder = new StreamsBuilder
-
-
     val ratings: KStream[String, Rating] =
           builder.stream[String, Rating]("CustomSerdesInputTopic")
 
@@ -53,8 +50,6 @@ class CustomSerdesTopology extends App {
     val aggregatedTable =
       groupedBy
         .aggregate[List[Rating]](List[Rating]())((aggKey, newValue, aggValue) => newValue :: aggValue)
-        (Materialized.`with`(stringSerde, listRatingSerde))
-
 
     var finalStream = aggregatedTable.toStream
     finalStream.peek((key, values) => {

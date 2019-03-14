@@ -12,7 +12,6 @@ import org.apache.kafka.streams.test.{ConsumerRecordFactory, OutputVerifier}
 import org.scalatest._
 import org.apache.kafka.common.serialization.Serdes
 
-import scala.util.Random
 
 class CustomSerdesTopologyTests
   extends FunSuite

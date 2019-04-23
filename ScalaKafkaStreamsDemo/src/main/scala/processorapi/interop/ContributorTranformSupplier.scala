@@ -71,28 +71,6 @@ class ContributorTranformSupplier extends ValueTransformerSupplier[Contributor, 
       if(contributorStore != null) {
         contributorStore.close()
       }
-
     }
   }
 }
-
-
-//
-//val transformerSupplierJ: TransformerSupplier[K, V, KeyValue[K1, V1]] = () => {
-//  val transformerS: Transformer[K, V, (K1, V1)] = transformerSupplier()
-//  new Transformer[K, V, KeyValue[K1, V1]] {
-//  override def transform(key: K, value: V): KeyValue[K1, V1] = {
-//  val res = transformerS.transform(key, value)
-//  new KeyValue[K1, V1](res._1, res._2)
-//}
-//
-//  override def init(context: ProcessorContext): Unit = transformerS.init(context)
-//
-//  override def punctuate(timestamp: Long): KeyValue[K1, V1] = {
-//  val res = transformerS.punctuate(timestamp)
-//  new KeyValue[K1, V1](res._1, res._2)
-//}
-//
-//  override def close(): Unit = transformerS.close()
-//}
-//}

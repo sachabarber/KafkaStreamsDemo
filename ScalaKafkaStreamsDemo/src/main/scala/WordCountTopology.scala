@@ -52,7 +52,8 @@ class WordCountTopology extends App {
     logConfig.put("retention.bytes", "10000000000")
     logConfig.put("cleanup.policy", "compact,delete")
     val wordCountStoreSupplier = Stores.inMemoryKeyValueStore(wordCountStoreName)
-    val wordCountStoreBuilder = Stores.keyValueStoreBuilder(wordCountStoreSupplier, Serdes.String, Serdes.Long)
+    val wordCountStoreBuilder = Stores.keyValueStoreBuilder(wordCountStoreSupplier,
+        Serdes.String, Serdes.Long)
       .withLoggingEnabled(logConfig)
       .withCachingEnabled()
 

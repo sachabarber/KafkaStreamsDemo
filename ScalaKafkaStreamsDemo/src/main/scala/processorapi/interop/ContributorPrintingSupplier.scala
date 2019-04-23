@@ -8,7 +8,6 @@ import org.apache.kafka.streams.processor.{Processor, ProcessorSupplier}
 class ContributorPrintingSupplier(val pw: PrintWriter) extends ProcessorSupplier[String, Long] {
   override def get(): Processor[String, Long] = new Processor[String,Long] {
 
-
     import org.apache.kafka.streams.processor.ProcessorContext
     import org.apache.kafka.streams.state.KeyValueStore
 

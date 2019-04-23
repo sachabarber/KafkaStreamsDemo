@@ -49,8 +49,8 @@ Set of small KafkaStreams demos/tests written in Scala 2.12, using Kafka 2.1.1
 </li>
  	<li>Applying processors and transformers (Processor API integration)
 <ul>
- 	<li>Process</li>
- 	<li>Transform / Transform (Values only)</li>
+ 	<li><a href="https://sachabarbs.wordpress.com/2019/04/23/kafkastreams-using-processor-api-in-dsl/">Process</a></li>
+ 	<li><a href="https://sachabarbs.wordpress.com/2019/04/23/kafkastreams-using-processor-api-in-dsl/">Transform / Transform (Values only)</a></li>
 </ul>
 </li>
  	<li><a href="https://sachabarbs.wordpress.com/2019/03/14/kafkastreams-custom-serdes/">Custom Serdes</a></li>

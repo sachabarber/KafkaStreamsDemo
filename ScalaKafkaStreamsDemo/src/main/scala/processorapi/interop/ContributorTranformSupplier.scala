@@ -22,7 +22,8 @@ class ContributorTranformSupplier extends ValueTransformerSupplier[Contributor, 
         .asInstanceOf[KeyValueStore[String, Contributor]]
 
       //to punctuate you would do something like this
-      //      context.schedule(Duration.ofSeconds(1), PunctuationType.WALL_CLOCK_TIME, new Punctuator {
+      //      context.schedule(Duration.ofSeconds(1),
+      //            PunctuationType.WALL_CLOCK_TIME, new Punctuator {
       //        override def punctuate(timestamp: Long): Unit = {
       //
       //          val it = contributorStore.all

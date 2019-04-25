@@ -3,13 +3,13 @@ package processorapi.interop
 import java.io._
 import java.util.Properties
 
-import common.PropsHelper
 import entities.Contributor
 import org.apache.kafka.common.serialization.{Serdes, _}
 import org.apache.kafka.streams.TopologyTestDriver
 import org.apache.kafka.streams.test.ConsumerRecordFactory
 import org.scalatest._
 import serialization.{JSONDeserializer, JSONSerde}
+import utils.Settings
 
 import scala.io.Source
 
@@ -19,7 +19,7 @@ class ProcessorApiProcessSupplierTopologyTests
   with BeforeAndAfter
   with Matchers {
 
-  val props = PropsHelper.createBasicStreamProperties("processor-api-process-supplier-application", "localhost:9092")
+  val props = Settings.createBasicStreamProperties("processor-api-process-supplier-application", "localhost:9092")
   val stringDeserializer: StringDeserializer = new StringDeserializer
   val contributorDeserializer: JSONDeserializer[Contributor] = new JSONDeserializer[Contributor]
 

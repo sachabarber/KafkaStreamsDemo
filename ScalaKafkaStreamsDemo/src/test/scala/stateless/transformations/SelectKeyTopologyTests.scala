@@ -3,18 +3,18 @@ package stateless.transformations
 import java.io._
 import java.util.Properties
 
-import common.PropsHelper
 import org.apache.kafka.common.serialization.{StringDeserializer, _}
 import org.apache.kafka.streams.TopologyTestDriver
 import org.apache.kafka.streams.test.{ConsumerRecordFactory, OutputVerifier}
 import org.scalatest._
+import utils.Settings
 
 class SelectKeyTopologyTests
   extends FunSuite
   with BeforeAndAfter
   with Matchers {
 
-  val props = PropsHelper.createBasicStreamProperties("stateless-selectKey-application", "localhost:9092")
+  val props = Settings.createBasicStreamProperties("stateless-selectKey-application", "localhost:9092")
   val integerDeserializer: IntegerDeserializer = new IntegerDeserializer
   val stringDeserializer: StringDeserializer = new StringDeserializer
 

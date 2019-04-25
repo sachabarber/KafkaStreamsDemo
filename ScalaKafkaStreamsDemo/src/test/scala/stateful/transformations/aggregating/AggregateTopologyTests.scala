@@ -4,18 +4,18 @@ import java.io._
 import java.lang
 import java.util.Properties
 
-import common.PropsHelper
 import org.apache.kafka.common.serialization.{LongDeserializer, _}
 import org.apache.kafka.streams.TopologyTestDriver
 import org.apache.kafka.streams.test.{ConsumerRecordFactory, OutputVerifier}
 import org.scalatest._
+import utils.Settings
 
 class AggregateTopologyTests
   extends FunSuite
   with BeforeAndAfter
   with Matchers {
 
-  val props = PropsHelper.createBasicStreamProperties("stateless-aggregate-application", "localhost:9092")
+  val props = Settings.createBasicStreamProperties("stateless-aggregate-application", "localhost:9092")
   val integerDeserializer: IntegerDeserializer = new IntegerDeserializer
   val longDeserializer: LongDeserializer = new LongDeserializer
 

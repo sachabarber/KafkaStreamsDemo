@@ -4,17 +4,17 @@ import org.apache.kafka.common.serialization.{StringDeserializer, StringSerializ
 import java.io._
 import java.util.Properties
 
-import common.PropsHelper
 import org.apache.kafka.streams.TopologyTestDriver
 import org.apache.kafka.streams.test.ConsumerRecordFactory
 import org.apache.kafka.streams.test.OutputVerifier
+import utils.Settings
 
 class StaightThoughTests
   extends FunSuite
   with BeforeAndAfter
   with Matchers {
 
-  val props = PropsHelper.createBasicStreamProperties("straight-through-application-tests","localhost:9092")
+  val props = Settings.createBasicStreamProperties("straight-through-application-tests","localhost:9092")
   val stringDeserializer: StringDeserializer = new StringDeserializer
 
   before {

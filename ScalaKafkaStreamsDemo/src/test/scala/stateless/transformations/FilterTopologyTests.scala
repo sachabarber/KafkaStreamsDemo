@@ -3,12 +3,13 @@ package stateless.transformations
 import java.io._
 import java.util.Properties
 
-import common.PropsHelper
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.{LongDeserializer, LongSerializer, StringDeserializer, StringSerializer}
 import org.apache.kafka.streams.TopologyTestDriver
 import org.apache.kafka.streams.test.{ConsumerRecordFactory, OutputVerifier}
 import org.scalatest._
+import utils.Settings
+
 import scala.collection.JavaConverters._
 
 class FilterTopologyTests
@@ -16,7 +17,7 @@ class FilterTopologyTests
   with BeforeAndAfter
   with Matchers {
 
-  val props = PropsHelper.createBasicStreamProperties("stateless-filter-application", "localhost:9092")
+  val props = Settings.createBasicStreamProperties("stateless-filter-application", "localhost:9092")
   val stringDeserializer: StringDeserializer = new StringDeserializer
   val longDeserializer: LongDeserializer = new LongDeserializer
 

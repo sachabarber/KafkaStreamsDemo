@@ -2,18 +2,18 @@ import java.time.Duration
 import java.util
 import java.util.Properties
 
-import common.PropsHelper
 import org.apache.kafka.streams.{KafkaStreams, Topology}
 import org.apache.kafka.streams.scala.ImplicitConversions._
 import org.apache.kafka.streams.scala._
 import org.apache.kafka.streams.scala.kstream._
+import utils.Settings
 
 
 class WordCountTopology extends App {
 
   import Serdes._
 
-  val props: Properties = PropsHelper.createBasicStreamProperties(
+  val props: Properties = Settings.createBasicStreamProperties(
     "straight-through-application","localhost:9092")
 
   run()

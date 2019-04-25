@@ -4,13 +4,13 @@ import java.io._
 import java.lang
 import java.util.Properties
 
-import common.PropsHelper
 import entities.Rating
 import org.apache.kafka.common.serialization.{LongDeserializer, _}
 import org.apache.kafka.streams.TopologyTestDriver
 import org.apache.kafka.streams.test.{ConsumerRecordFactory, OutputVerifier}
 import org.scalatest._
 import org.apache.kafka.common.serialization.Serdes
+import utils.Settings
 
 
 class CustomSerdesTopologyTests
@@ -18,7 +18,7 @@ class CustomSerdesTopologyTests
   with BeforeAndAfter
   with Matchers {
 
-  val props = PropsHelper.createBasicStreamProperties("custom-serdes-application", "localhost:9092")
+  val props = Settings.createBasicStreamProperties("custom-serdes-application", "localhost:9092")
   val stringDeserializer: StringDeserializer = new StringDeserializer
   val ratingLIstDeserializer: JSONDeserializer[List[Rating]] = new JSONDeserializer[List[Rating]]
 

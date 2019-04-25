@@ -4,18 +4,18 @@ import java.io._
 import java.util.Properties
 
 import com.fasterxml.jackson.databind.deser.std.NumberDeserializers.BigIntegerDeserializer
-import common.PropsHelper
 import org.apache.kafka.common.serialization._
 import org.apache.kafka.streams.TopologyTestDriver
 import org.apache.kafka.streams.test.{ConsumerRecordFactory, OutputVerifier}
 import org.scalatest._
+import utils.Settings
 
 class GroupByTopologyTests
   extends FunSuite
   with BeforeAndAfter
   with Matchers {
 
-  val props = PropsHelper.createBasicStreamProperties("stateless-groupBy-application", "localhost:9092")
+  val props = Settings.createBasicStreamProperties("stateless-groupBy-application", "localhost:9092")
   val integerDeserializer: IntegerDeserializer = new IntegerDeserializer
   val stringDeserializer: StringDeserializer = new StringDeserializer
 

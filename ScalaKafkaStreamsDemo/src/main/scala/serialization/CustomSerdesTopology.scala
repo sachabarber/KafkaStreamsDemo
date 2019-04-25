@@ -3,20 +3,20 @@ package serialization
 import java.time.Duration
 import java.util.Properties
 
-import common.PropsHelper
 import entities.Rating
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.scala.ImplicitConversions._
 import org.apache.kafka.streams.scala._
 import org.apache.kafka.streams.scala.kstream._
 import org.apache.kafka.streams.{KafkaStreams, Topology}
+import utils.Settings
 
 
 class CustomSerdesTopology extends App {
 
   import Serdes._
 
-  val props: Properties = PropsHelper.createBasicStreamProperties(
+  val props: Properties = Settings.createBasicStreamProperties(
     "custom-serdes-application", "localhost:9092")
 
   run()

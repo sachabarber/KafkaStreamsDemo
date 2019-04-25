@@ -3,18 +3,18 @@ package stateful.transformations.aggregating
 import java.time.Duration
 import java.util.Properties
 
-import common.PropsHelper
 import org.apache.kafka.streams.scala.ImplicitConversions._
 import org.apache.kafka.streams.scala._
 import org.apache.kafka.streams.scala.kstream.{Materialized, _}
-import org.apache.kafka.streams.{KafkaStreams,  Topology}
+import org.apache.kafka.streams.{KafkaStreams, Topology}
+import utils.Settings
 
 
 class ReduceTopology extends App {
 
   import Serdes._
 
-  val props: Properties = PropsHelper.createBasicStreamProperties(
+  val props: Properties = Settings.createBasicStreamProperties(
     "stateless-reduce-application", "localhost:9092")
 
   run()

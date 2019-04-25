@@ -5,18 +5,18 @@ import java.time.Duration
 import java.util
 import java.util.Properties
 
-import common.PropsHelper
 import entities.Contributor
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.scala.kstream._
 import org.apache.kafka.streams.scala.{ByteArrayKeyValueStore, StreamsBuilder, kstream}
 import org.apache.kafka.streams.{KafkaStreams, Topology}
 import serialization.JSONSerde
+import utils.Settings
 
 
 class ProcessorApiProcessSupplierTopology(val pw: PrintWriter) extends App {
 
-  val props: Properties = PropsHelper.createBasicStreamProperties(
+  val props: Properties = Settings.createBasicStreamProperties(
     "processor-api-process-supplier-application", "localhost:9092")
 
   run()

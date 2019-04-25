@@ -3,12 +3,12 @@ package joining
 import java.time.Duration
 import java.util.Properties
 
-import common.PropsHelper
 import org.apache.kafka.streams.kstream.JoinWindows
 import org.apache.kafka.streams.scala.ImplicitConversions._
 import org.apache.kafka.streams.scala._
 import org.apache.kafka.streams.scala.kstream._
 import org.apache.kafka.streams.{KafkaStreams, Topology}
+import utils.Settings
 
 import scala.util.Try
 
@@ -17,7 +17,7 @@ class LeftJoinTopology extends App {
 
   import Serdes._
 
-  val props: Properties = PropsHelper.createBasicStreamProperties(
+  val props: Properties = Settings.createBasicStreamProperties(
     "left-join-application", "localhost:9092")
 
   run()

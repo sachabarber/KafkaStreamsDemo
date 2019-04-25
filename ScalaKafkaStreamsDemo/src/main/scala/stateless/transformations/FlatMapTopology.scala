@@ -3,18 +3,18 @@ package stateless.transformations
 import java.time.Duration
 import java.util.Properties
 
-import common.PropsHelper
 import org.apache.kafka.streams.scala.ImplicitConversions._
 import org.apache.kafka.streams.scala._
 import org.apache.kafka.streams.scala.kstream._
 import org.apache.kafka.streams.{KafkaStreams, KeyValue, Topology}
+import utils.Settings
 
 
 class FlatMapTopology extends App {
 
   import Serdes._
 
-  val props: Properties = PropsHelper.createBasicStreamProperties(
+  val props: Properties = Settings.createBasicStreamProperties(
     "stateless-flatMap-application", "localhost:9092")
 
   run()

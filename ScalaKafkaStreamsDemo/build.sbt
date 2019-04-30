@@ -12,7 +12,6 @@ libraryDependencies += "org.apache.kafka" %% "kafka-streams-scala" % "2.1.0"
 libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.9.8"
 
 libraryDependencies += "com.typesafe" % "config" % "1.3.4"
-libraryDependencies += "org.skinny-framework.com.fasterxml.jackson.module" % "jackson-module-scala_2.12" % "2.8.4"
 libraryDependencies += "com.typesafe.akka"   %% "akka-http-spray-json" % "10.0.9"
 libraryDependencies += "com.typesafe.akka"   %% "akka-http" % "10.0.9"
 

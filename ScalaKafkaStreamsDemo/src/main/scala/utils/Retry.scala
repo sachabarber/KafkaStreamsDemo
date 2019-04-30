@@ -78,7 +78,7 @@ object Retry {
       } else {
         val success = try {
           val rez = if (deadline.isDefined) {
-            Await.result(future(f()), deadline.get.timeLeft)
+            Await.result(Future(f()), deadline.get.timeLeft)
           } else {
             f()
           }

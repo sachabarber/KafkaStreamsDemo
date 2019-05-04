@@ -28,7 +28,16 @@ object Settings {
   }
 
   def createRatingStreamsProperties() : Properties = {
-    val props = createBasicStreamProperties
+    val props = new Properties()
+    props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServers)
+    props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String.getClass)
+    props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String.getClass)
+    props.put(ProducerConfig.RETRIES_CONFIG, 0.asInstanceOf[Object])
+    // Records should be flushed every 10 seconds. This is less than the default
+    // in order to keep this example interactive.
+    props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 10000.asInstanceOf[Object])
+    // For illustrative purposes we disable record caches
+    props.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0.asInstanceOf[Object])
     props.put(StreamsConfig.APPLICATION_ID_CONFIG, "ratings-application")
     props.put(StreamsConfig.CLIENT_ID_CONFIG, "ratings-application-client")
     props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String.getClass)
@@ -42,11 +51,13 @@ object Settings {
     props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServers)
     props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String.getClass)
     props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String.getClass)
+
     // Records should be flushed every 10 seconds. This is less than the default
     // in order to keep this example interactive.
     props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 10000.asInstanceOf[Object])
     // For illustrative purposes we disable record caches
     props.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0.asInstanceOf[Object])
+    props.put(StreamsConfig.STATE_DIR_CONFIG, s"C:\\data\\kafka-streams".asInstanceOf[Object])
     props
   }
 
@@ -54,6 +65,7 @@ object Settings {
 
     val props = new Properties()
     props.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId)
+    props.put(StreamsConfig.APPLICATION_SERVER_CONFIG,  "localhost:8080")
     props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, if (specificBootStrapServers.isEmpty) bootStrapServers else specificBootStrapServers)
     props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String.getClass)
     props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String.getClass)

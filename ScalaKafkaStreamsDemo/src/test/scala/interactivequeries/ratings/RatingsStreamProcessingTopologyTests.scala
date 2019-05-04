@@ -4,13 +4,16 @@ import java.io._
 import java.util.Properties
 
 import entities.Rating
+import interactive.queries.ratings.RatingStreamProcessingTopology
 import org.apache.kafka.common.serialization.{Serdes, _}
 import org.apache.kafka.streams.TopologyTestDriver
 import org.apache.kafka.streams.state.KeyValueStore
 import org.apache.kafka.streams.test.{ConsumerRecordFactory, OutputVerifier}
 import org.scalatest._
-import serialization.{JSONDeserializer, JSONSerde, RatingStreamProcessingTopology}
+import serialization.{JSONDeserializer, JSONSerde}
 import utils.{Settings, StateStores}
+
+import scala.concurrent.{ExecutionContext, Future}
 
 
 class RatingsStreamProcessingTopologyTests
@@ -55,20 +58,10 @@ class RatingsStreamProcessingTopologyTests
     val testDriver = new TopologyTestDriver(theTopology, props)
 
     //Use the custom JSONSerde[Rating]
-    testDriver.pipeInput(recordFactory.create("RatingInputTopic", rating.toEmail, ratingBytes, 9995L))
+    testDriver.pipeInput(recordFactory.create("rating-submit-topic", rating.toEmail, ratingBytes, 9995L))
 
     val ratingsByEmailStore: KeyValueStore[String, List[Rating]] = testDriver.getKeyValueStore(StateStores.RATINGS_BY_EMAIL_STORE)
     val ratingStored = ratingsByEmailStore.get("sacha@here.com")
-
-
-
-
-    //TODO : Do above in a loop randomly picking stuf
-    //TODO : Need to call Run on ratingStreamProcessingTopology
-    //wait for run to complete then hit an endpoint for REST
-
-    ratingStreamProcessingTopology.run(Some(theTopology), false)
-
 
     cleanup(props, testDriver)
   }

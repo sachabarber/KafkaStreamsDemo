@@ -37,7 +37,8 @@ object RatingsProducerApp extends App {
 
     while (true) {
       //for (i <- 0 to 10) {
-      val rating = ratingsList(random.nextInt(ratingsList.size))
+      //val rating = ratingsList(random.nextInt(ratingsList.size))
+      val rating = ratingsList(0)
       val ratingBytes = jSONSerde.serializer().serialize("", rating)
       System.out.println(s"Writing rating ${rating} to input topic rating-submit-topic")
       ratingProducer.send(new ProducerRecord[String, Array[Byte]](

@@ -38,8 +38,8 @@ class RatingStreamProcessingTopology  {
     val ratingByEmailStoreSupplied = Stores.inMemoryKeyValueStore(ratingByEmailStoreName)
     val ratingByEmailStoreBuilder = Stores.keyValueStoreBuilder(ratingByEmailStoreSupplied,
       Serdes.String, listRatingSerde)
-        .withCachingDisabled()
-        .withLoggingDisabled()
+      .withLoggingEnabled(logConfig)
+      .withCachingEnabled()
 
     val builtStore = ratingByEmailStoreBuilder.build()
 

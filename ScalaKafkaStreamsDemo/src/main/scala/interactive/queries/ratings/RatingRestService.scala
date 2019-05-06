@@ -36,6 +36,13 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
+  var isStateStoredReady: Boolean = false
+
+
+  def setReady(isReady : Boolean): Unit = {
+    isStateStoredReady = isReady
+  }
+
 
   def start() : Unit = {
     val emailRegexPattern =  """\w+""".r
@@ -45,6 +52,11 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
       path("ratingByEmail") {
         get {
           parameters('email.as[String]) { (email) =>
+
+            if(!isStateStoredReady) {
+              complete(HttpResponse(StatusCodes.InternalServerError, entity = "state stored not queryable, possible due to re-balancing"))
+            }
+
             try {
 
               val host = metadataService.streamsMetadataForStoreAndKey[String](
@@ -66,8 +78,7 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
             }
             catch {
               case (ex: Exception) => {
-                val finalList:List[Rating] = scala.collection.immutable.List[Rating]()
-                complete(finalList)
+                complete(HttpResponse(StatusCodes.InternalServerError, entity = ex.getMessage))
               }
             }
           }
@@ -75,11 +86,17 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
       } ~
       path("instances") {
         get {
+          if(!isStateStoredReady) {
+            complete(HttpResponse(StatusCodes.InternalServerError, entity = "state stored not queryable, possible due to re-balancing"))
+          }
           complete(ToResponseMarshallable.apply(metadataService.streamsMetadata))
         }
       }~
       path("instances" / storeNameRegexPattern) { storeName =>
         get {
+          if(!isStateStoredReady) {
+            complete(HttpResponse(StatusCodes.InternalServerError, entity = "state stored not queryable, possible due to re-balancing"))
+          }
           complete(ToResponseMarshallable.apply(metadataService.streamsMetadataForStore(storeName)))
         }
       }

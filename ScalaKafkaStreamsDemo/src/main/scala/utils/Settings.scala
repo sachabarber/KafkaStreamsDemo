@@ -43,6 +43,7 @@ object Settings {
     props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String.getClass)
     props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String.getClass)
     props.put(StreamsConfig.APPLICATION_SERVER_CONFIG,  s"${restApiDefaultHostName}:${restApiDefaultPort}")
+    props.put(StreamsConfig.STATE_DIR_CONFIG, s"C:\\data\\kafka-streams".asInstanceOf[Object])
     props
   }
 

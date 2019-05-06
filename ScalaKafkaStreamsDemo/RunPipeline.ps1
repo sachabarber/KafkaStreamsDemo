@@ -1,5 +1,6 @@
 $global:kafkaWindowsBatFolder = "C:\Apache\confluent-5.2.1-2.12\bin\windows\"
 $global:kafkaAndZooLoggingFolder = "C:\temp\"
+$global:kafkaAndZooTmpFolder = "C:\tmp\"
 
 
 $global:kafkaTopics = 
@@ -21,7 +22,9 @@ function RunPipeLine()
 	$path = $kafkaAndZooLoggingFolder + "zookeeper"
 	Remove-Item -Recurse -Force $path
 	
-	
+    $path = $kafkaAndZooLoggingFolder
+	Remove-Item -Recurse -Force $path
+
 
 	Start-Sleep -s 20
 	

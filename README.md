@@ -54,5 +54,5 @@ Set of small KafkaStreams demos/tests written in Scala 2.12, using Kafka 2.1.1
 </ul>
 </li>
  	<li><a href="https://sachabarbs.wordpress.com/2019/03/14/kafkastreams-custom-serdes/">Custom Serdes</a></li>
- 	<li>Interactive Queries</li>
+    <li><a href="https://sachabarbs.wordpress.com/2019/05/08/kafkastreams-interactive-queries/">Interactive Queries</a></li>
 </ul>

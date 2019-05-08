@@ -65,16 +65,19 @@ class RatingRestService(val streams: KafkaStreams, val hostInfo: HostInfo) {
                 Serdes.String().serializer()
               )
 
-              var future:Future[List[Rating]] = null
-
               //store is hosted on another process, REST Call
-              if(!thisHost(host))
-                future = fetchRemoteRatingByEmail(host, email)
-              else
-                future = fetchLocalRatingByEmail(email)
-
-              val ratings = Await.result(future, 20 seconds)
-              complete(ratings)
+              if(!thisHost(host)) {
+                onComplete(fetchRemoteRatingByEmail(host, email)) {
+                  case Success(value) => complete(value)
+                  case Failure(ex)    => complete(HttpResponse(StatusCodes.InternalServerError, entity = ex.getMessage))
+                }
+              }
+              else {
+                onComplete(fetchLocalRatingByEmail(email)) {
+                  case Success(value) => complete(value)
+                  case Failure(ex)    => complete(HttpResponse(StatusCodes.InternalServerError, entity = ex.getMessage))
+                }
+              }
             }
             catch {
               case (ex: Exception) => {

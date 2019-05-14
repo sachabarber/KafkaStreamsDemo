@@ -39,10 +39,8 @@ Set of small KafkaStreams demos/tests written in Scala 2.12, using Kafka 2.1.1
 </li>
  	<li>Windowing
 <ul>
- 	<li>Tumbling time window</li>
- 	<li>Hopping time window</li>
- 	<li>Sliding time window</li>
- 	<li>Session window</li>
+ 	<li><a href="https://sachabarbs.wordpress.com/2019/05/14/kafkastreams-windowing/">Tumbling time window</a></li>
+	<li><a href="https://sachabarbs.wordpress.com/2019/05/14/kafkastreams-windowing/">Hopping time window</a></li>
 </ul>
 </li>
 </ul>
